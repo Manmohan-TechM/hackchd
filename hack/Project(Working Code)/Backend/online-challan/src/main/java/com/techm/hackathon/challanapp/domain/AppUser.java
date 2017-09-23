@@ -35,7 +35,19 @@ public class AppUser {
     @Column(name = "challan_count_year", nullable = false)
     private String challan_count_year;
     
-    public AppUser() {
+    @Column(name = "isadmin", nullable = false)
+    private boolean isAdmin;
+    
+    
+    public boolean isAdmin() {
+		return isAdmin;
+	}
+
+	public void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+
+	public AppUser() {
     }
 
     public AppUser(String username) {

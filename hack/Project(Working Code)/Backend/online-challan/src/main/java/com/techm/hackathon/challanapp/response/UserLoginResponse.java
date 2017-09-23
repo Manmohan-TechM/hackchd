@@ -5,7 +5,7 @@ import com.techm.hackathon.challanapp.domain.AppUser;
 public class UserLoginResponse {
 	
 	private AppUser user;	
-	private int department_total_year;
+	private long total_challan_count;
 	private String highest_scorer;
 	private String current_Location;
 	/**
@@ -23,14 +23,14 @@ public class UserLoginResponse {
 	/**
 	 * @return the department_total_year
 	 */
-	public int getDepartment_total_year() {
-		return department_total_year;
+	public long getTotal_challan_count() {
+		return total_challan_count;
 	}
 	/**
 	 * @param department_total_year the department_total_year to set
 	 */
-	public void setDepartment_total_year(int department_total_year) {
-		this.department_total_year = department_total_year;
+	public void setTotal_challan_count(long total_challan_count) {
+		this.total_challan_count = total_challan_count;
 	}
 	/**
 	 * @return the highest_scorer

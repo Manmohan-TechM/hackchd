@@ -63,8 +63,8 @@ public class PoliceUserController {
 		if(null!=returnUser && returnUser.getPassword().equalsIgnoreCase(userRequest.getPassword()))
 		{
 			res.setUser(returnUser);
-			res.setDepartment_total_year(100);
-			res.setHighest_scorer("Shapata Ram Singh");			
+			res.setTotal_challan_count(userRepository.sumChallans());
+			res.setHighest_scorer(userRepository.maxChallansUser());
 			return res;
 		}
 		else throw new AuthenticationException("Wrong username or password");
@@ -79,7 +79,7 @@ public class PoliceUserController {
 		final Iterable<Challan> all = challanRepository.findAll();
 		all.forEach(new Consumer<Challan>() {
 			@Override
-			public void accept(Challan ch) {				
+			public void accept(Challan ch) {
 				listofChallan.add(ch);
 			}
 		});
@@ -103,5 +103,30 @@ public class PoliceUserController {
 		return res;
 		
 	}
+	
+	@RequestMapping(value = "/adminauth", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public UserLoginResponse adminAuth(@RequestBody UserLoginRequest userRequest) throws AuthenticationException {
+		UserLoginResponse res=new UserLoginResponse();
+		AppUser adminUser= findAll()
+				.parallelStream()
+				.filter(user -> user.getUsername().equalsIgnoreCase(
+						userRequest.getUsername()))
+				.findFirst().orElse(null);
+		
+		if(null!=adminUser && !adminUser.getPassword().isEmpty() && adminUser.getPassword().equalsIgnoreCase(userRequest.getPassword()))
+		{
+			res.setUser(adminUser);
+			// Find total number of challans made
+			System.out.println(userRepository.sumChallans());
+			res.setTotal_challan_count(userRepository.sumChallans());
+			// Max challan made by user	
+			System.out.println(userRepository.maxChallansUser());
+			res.setHighest_scorer(userRepository.maxChallansUser());			
+			return res;
+		}
+		else throw new AuthenticationException("Wrong username or password");
+		
+	}
+	
 
 }
