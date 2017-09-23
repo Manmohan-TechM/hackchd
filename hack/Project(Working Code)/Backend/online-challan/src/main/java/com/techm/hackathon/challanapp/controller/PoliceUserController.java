@@ -50,6 +50,20 @@ public class PoliceUserController {
 		});
 		return resultList;
 	}
+	
+	@RequestMapping(value = "/resetPassword", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public AppUser changePassword(@RequestBody UserLoginRequest userRequest) throws AuthenticationException {
+		
+		UserLoginResponse res=new UserLoginResponse();
+		AppUser userUpdated= findAll()
+				.parallelStream()
+				.filter(user -> user.getUsername().equalsIgnoreCase(
+						userRequest.getUsername()))
+				.findFirst().orElse(null);
+		
+		userUpdated.setPassword(userRequest.getPassword());
+		return userUpdated;
+	}
 
 	@RequestMapping(value = "/authentication", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public UserLoginResponse authentication(@RequestBody UserLoginRequest userRequest) throws AuthenticationException {
