@@ -1,0 +1,27 @@
+# Created by .ignore support plugin (hsz.mobi)
+pom.xml.bak
+*.script
+
+
+target/
+
+
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+.project
+.settings
+.classpath
+*.properties
+
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
