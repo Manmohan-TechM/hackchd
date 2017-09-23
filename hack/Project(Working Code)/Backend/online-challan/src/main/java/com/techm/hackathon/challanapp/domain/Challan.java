@@ -47,6 +47,17 @@ public class Challan {
 	@Column(name = "date", nullable = false)
 	private String date;
 	
+	@Column(name = "policeusername", nullable = false)
+	private String policeUserName;
+	
+	public String getPoliceUserName() {
+		return policeUserName;
+	}
+
+	public void setPoliceUserName(String policeUserName) {
+		this.policeUserName = policeUserName;
+	}
+
 	public Long getChallanId() {
 		return challanId;
 	}

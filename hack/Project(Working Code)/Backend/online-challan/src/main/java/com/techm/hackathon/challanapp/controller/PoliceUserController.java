@@ -91,10 +91,14 @@ public class PoliceUserController {
 			}
 		});
 		res.setChallanList(prevlistofChallansforCulprit);
-		
-		
-		
-		
+		// Updating policeman challan count
+		AppUser policeUser= findAll()
+				.parallelStream()
+				.filter(user -> user.getUsername().equalsIgnoreCase(
+						challan.getPoliceUserName()))
+				.findFirst().orElse(null);
+		policeUser.setChallan_count_total(policeUser.getChallan_count_total() + 1);		
+		userRepository.save(policeUser);
 		
 		return res;
 		

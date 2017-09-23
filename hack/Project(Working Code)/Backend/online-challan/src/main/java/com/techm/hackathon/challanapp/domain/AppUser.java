@@ -27,7 +27,7 @@ public class AppUser {
     private String base_location;
     
     @Column(name = "challan_count_total", nullable = false)
-    private String challan_count_total;
+    private int challan_count_total;
     
     @Column(name = "challan_count_month", nullable = false)
     private String challan_count_month;
@@ -128,14 +128,14 @@ public class AppUser {
 	/**
 	 * @return the challan_count_total
 	 */
-	public String getChallan_count_total() {
+	public int getChallan_count_total() {
 		return challan_count_total;
 	}
 
 	/**
 	 * @param challan_count_total the challan_count_total to set
 	 */
-	public void setChallan_count_total(String challan_count_total) {
+	public void setChallan_count_total(int challan_count_total) {
 		this.challan_count_total = challan_count_total;
 	}
 
