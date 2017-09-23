@@ -74,7 +74,7 @@ public class PoliceUserController {
 						userRequest.getUsername()))
 				.findFirst().orElse(null);
 		
-		if(null!=returnUser && returnUser.getPassword().equalsIgnoreCase(userRequest.getPassword()))
+		if(null!=returnUser && returnUser.getPassword().equals(userRequest.getPassword()))
 		{
 			res.setUser(returnUser);
 			res.setTotal_challan_count(userRepository.sumChallans());
@@ -126,21 +126,26 @@ public class PoliceUserController {
 				.filter(user -> user.getUsername().equalsIgnoreCase(
 						userRequest.getUsername()))
 				.findFirst().orElse(null);
-		
-		if(null!=adminUser && !adminUser.getPassword().isEmpty() && adminUser.getPassword().equalsIgnoreCase(userRequest.getPassword()))
+
+		if(null!=adminUser && !adminUser.getPassword().isEmpty() &&adminUser.getPassword().equals(userRequest.getPassword()))
 		{
-			res.setUser(adminUser);
-			// Find total number of challans made
-			System.out.println(userRepository.sumChallans());
-			res.setTotal_challan_count(userRepository.sumChallans());
-			// Max challan made by user	
-			System.out.println(userRepository.maxChallansUser());
-			res.setHighest_scorer(userRepository.maxChallansUser());			
-			return res;
+			if(adminUser.isAdmin()) 
+			{
+				res.setUser(adminUser);
+				// Find total number of challans made
+				System.out.println(userRepository.sumChallans());
+				res.setTotal_challan_count(userRepository.sumChallans());
+				// Max challan made by user	
+				System.out.println(userRepository.maxChallansUser());
+				res.setHighest_scorer(userRepository.maxChallansUser());						
+				return res;
+			}
+			else throw new AuthenticationException("The User is not admin.");
 		}
-		else throw new AuthenticationException("Wrong username or password");
+		else throw new AuthenticationException("Wrong username or password.");
 		
 	}
+
 	
 
 }
