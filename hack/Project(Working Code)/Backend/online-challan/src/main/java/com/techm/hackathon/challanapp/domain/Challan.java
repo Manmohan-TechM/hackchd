@@ -1,5 +1,7 @@
 package com.techm.hackathon.challanapp.domain;
 
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,8 +33,8 @@ public class Challan {
     //@JoinColumn(name = "aadhar_no",referencedColumnName="aadhar_no", insertable = false, updatable = false) 
 	// @JoinColumn(insertable = false, updatable = false)
 	
-	  @OneToMany(mappedBy="aadhar_no",targetEntity=ViolaterDetails.class,
-      fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="aadhar_no",targetEntity=ViolaterDetails.class,
+    fetch=FetchType.EAGER)
 	private ViolaterDetails violatorDetails;
 		
 	@Column(name = "longitute", nullable = false)
@@ -41,14 +43,17 @@ public class Challan {
 	@Column(name = "lattitude", nullable = false)
 	private String lattitude;	
 		
-	@Column(name = "rules_violated", nullable = false)
-	private String rules_violated;
+	//@Column(name = "rules_violated", nullable = false)
+	//private String rules_violated;
 	
 	@Column(name = "date", nullable = false)
 	private String date;
 	
 	@Column(name = "policeusername", nullable = false)
 	private String policeUserName;
+	
+	@OneToMany(mappedBy="ruleId" ,fetch=FetchType.EAGER)
+	private Set<ViolationRulesDetails> rules_violated;
 	
 	public String getPoliceUserName() {
 		return policeUserName;
@@ -119,6 +124,14 @@ public class Challan {
 		this.aadhar_no = aadhar_no;
 	}
 
+	public Set<ViolationRulesDetails> getRules_violated() {
+		return rules_violated;
+	}
+
+	public void setRules_violated(Set<ViolationRulesDetails> rules_violated) {
+		this.rules_violated = rules_violated;
+	}
+
 	public String getDriving_license_no() {
 		return driving_license_no;
 	}
@@ -136,12 +149,12 @@ public class Challan {
 	}
 
 
-	public String getRules_violated() {
-		return rules_violated;
-	}
-
-	public void setRules_violated(String rules_violated) {
-		this.rules_violated = rules_violated;
-	}
+//	public String getRules_violated() {
+//		return rules_violated;
+//	}
+//
+//	public void setRules_violated(String rules_violated) {
+//		this.rules_violated = rules_violated;
+//	}
 
 }
