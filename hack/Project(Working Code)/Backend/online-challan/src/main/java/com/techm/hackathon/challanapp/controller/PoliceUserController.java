@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.techm.hackathon.challanapp.domain.AppUser;
 import com.techm.hackathon.challanapp.domain.Challan;
+import com.techm.hackathon.challanapp.domain.ViolationRulesDetails;
 import com.techm.hackathon.challanapp.repository.ChallanRepository;
 import com.techm.hackathon.challanapp.repository.UserRepository;
+import com.techm.hackathon.challanapp.repository.ViolationRulesRepository;
+import com.techm.hackathon.challanapp.request.ChallanHistoryRequest;
 import com.techm.hackathon.challanapp.request.ChallanRequest;
 import com.techm.hackathon.challanapp.request.UserLoginRequest;
 import com.techm.hackathon.challanapp.response.ChallanResponse;
@@ -32,6 +35,8 @@ public class PoliceUserController {
 	UserRepository userRepository;
 	@Inject
 	ChallanRepository challanRepository;
+	@Inject
+	ViolationRulesRepository violationRulesRepository;
 
 	@RequestMapping(value = "/user", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public AppUser create(@RequestBody AppUser user) {
@@ -114,10 +119,30 @@ public class PoliceUserController {
 		policeUser.setChallan_count_total(policeUser.getChallan_count_total() + 1);		
 		userRepository.save(policeUser);
 		
-		return res;
-		
+		return res;		
 	}
 	
+	@RequestMapping(value = "/getChallanDetails", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public List<Challan> getChallanDetails(@RequestBody ChallanHistoryRequest challanHistoryRequest) {
+		List<Challan> challanList = new ArrayList<>();
+		if(null != challanHistoryRequest.getAadhar_no() && !challanHistoryRequest.getAadhar_no().isEmpty())
+			challanList = challanRepository.getChallanByAadharNo(challanHistoryRequest.getAadhar_no());
+		else if(null != challanHistoryRequest.getChallanNo() && !challanHistoryRequest.getChallanNo().isEmpty())
+			challanList = challanRepository.getChallanByAadharNo(challanHistoryRequest.getAadhar_no());		
+		
+		return challanList;
+	}
+	
+	@RequestMapping(value = "/payChallan", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public List<Challan> payChallan(@RequestBody ChallanHistoryRequest challanHistoryRequest) {
+		List<Challan> challanList = new ArrayList<>();
+		if(null != challanHistoryRequest.getAadhar_no() && !challanHistoryRequest.getAadhar_no().isEmpty())
+			challanList = challanRepository.payChallanByAadharNo(challanHistoryRequest.getAadhar_no());
+		else if(null != challanHistoryRequest.getChallanNo() && !challanHistoryRequest.getChallanNo().isEmpty())
+			challanList = challanRepository.payChallanByAadharNo(challanHistoryRequest.getAadhar_no());		
+		
+		return challanList;
+	}
 	@RequestMapping(value = "/adminauth", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public UserLoginResponse adminAuth(@RequestBody UserLoginRequest userRequest) throws AuthenticationException {
 		UserLoginResponse res=new UserLoginResponse();
@@ -146,6 +171,24 @@ public class PoliceUserController {
 		
 	}
 
+	@RequestMapping(value = "/getViolationRules", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<ViolationRulesDetails> violationRules() {
+		final List<ViolationRulesDetails> resultList = new ArrayList<>();
+		final Iterable<ViolationRulesDetails> all = violationRulesRepository.findAll();
+		all.forEach(new Consumer<ViolationRulesDetails>() {
+			@Override
+			public void accept(ViolationRulesDetails violationRulesDetails) {
+				resultList.add(violationRulesDetails);
+			}
+		});
+		return resultList;
+	}
+	
+	@RequestMapping(value = "/addViolationRule", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ViolationRulesDetails create(@RequestBody ViolationRulesDetails violationRule) {
+		return violationRulesRepository.save(violationRule);
+	}
+	
 	
 
 }

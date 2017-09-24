@@ -52,7 +52,19 @@ public class Challan {
 	@Column(name = "policeusername", nullable = false)
 	private String policeUserName;
 	
-	@OneToMany(mappedBy="ruleId" ,fetch=FetchType.EAGER)
+	@Column(name = "challanpayment")
+	private boolean challanPayment;
+	
+	public boolean isChallanPayment() {
+		return challanPayment;
+	}
+
+	public void setChallanPayment(boolean challanPayment) {
+		this.challanPayment = challanPayment;
+	}
+
+	@OneToMany(mappedBy="ruleId",fetch=FetchType.EAGER)
+	//@JsonIgnore
 	private Set<ViolationRulesDetails> rules_violated;
 	
 	public String getPoliceUserName() {
