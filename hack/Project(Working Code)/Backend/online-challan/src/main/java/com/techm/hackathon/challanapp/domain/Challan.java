@@ -25,7 +25,7 @@ public class Challan {
 	private String reg_no;
 	
 	//@OneToOne(mappedBy="aadhar_no",targetEntity=ViolaterDetails.class, fetch=FetchType.EAGER)
-	@OneToOne(optional=false,cascade=CascadeType.MERGE)
+	@OneToOne(optional=false,cascade=CascadeType.ALL)
     //@JoinColumn(name = "aadhar_no",referencedColumnName="aadhar_no", insertable = false, updatable = false) 
 	// @JoinColumn(insertable = false, updatable = false)
 	private ViolaterDetails violatorDetails;
