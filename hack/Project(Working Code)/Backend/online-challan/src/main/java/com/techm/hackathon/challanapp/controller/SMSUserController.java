@@ -31,7 +31,7 @@ public class SMSUserController {
         //Sender ID,While using route4 sender id should be 6 characters long.
         String senderId = "VERIFY";
         //Your message to send, Add URL encoding here.
-        String message = "Your Challan is done at the IT Park, Chandigarh. Challan Number is" + request.getChallan_number() + ". Kindly pay in next 15 days.";
+        String message = "Your Challan is done at the IT Park, Chandigarh. Challan Number is " + request.getChallan_number() + ". Kindly pay in next 15 days.";
         //define route
         String route="4";
 
