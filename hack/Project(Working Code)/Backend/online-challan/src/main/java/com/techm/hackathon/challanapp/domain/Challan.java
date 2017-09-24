@@ -32,9 +32,6 @@ public class Challan {
 	@OneToOne(optional=false,cascade=CascadeType.ALL)
     //@JoinColumn(name = "aadhar_no",referencedColumnName="aadhar_no", insertable = false, updatable = false) 
 	// @JoinColumn(insertable = false, updatable = false)
-	
-	@OneToMany(mappedBy="aadhar_no",targetEntity=ViolaterDetails.class,
-    fetch=FetchType.EAGER)
 	private ViolaterDetails violatorDetails;
 		
 	@Column(name = "longitute", nullable = false)
@@ -63,12 +60,21 @@ public class Challan {
 		this.challanPayment = challanPayment;
 	}
 
-	@OneToMany(mappedBy="ruleId",fetch=FetchType.EAGER)
+	
 	//@JsonIgnore
-	private Set<ViolationRulesDetails> rules_violated;
+	@OneToOne(optional=false,cascade=CascadeType.ALL)
+	private ViolationRulesDetails rules_violated;
 	
 	public String getPoliceUserName() {
 		return policeUserName;
+	}
+
+	public ViolationRulesDetails getRules_violated() {
+		return rules_violated;
+	}
+
+	public void setRules_violated(ViolationRulesDetails rules_violated) {
+		this.rules_violated = rules_violated;
 	}
 
 	public void setPoliceUserName(String policeUserName) {
@@ -136,15 +142,8 @@ public class Challan {
 		this.aadhar_no = aadhar_no;
 	}
 
-	public Set<ViolationRulesDetails> getRules_violated() {
-		return rules_violated;
-	}
-
-	public void setRules_violated(Set<ViolationRulesDetails> rules_violated) {
-		this.rules_violated = rules_violated;
-	}
-
-	public String getDriving_license_no() {
+	
+		public String getDriving_license_no() {
 		return driving_license_no;
 	}
 

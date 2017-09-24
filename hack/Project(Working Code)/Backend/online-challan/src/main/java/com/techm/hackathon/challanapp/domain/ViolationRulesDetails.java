@@ -8,8 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 public class ViolationRulesDetails {
 	
@@ -22,21 +20,10 @@ public class ViolationRulesDetails {
 	private String ruleDetail;
 	    
 	@Column(name = "ruleamount", nullable = false)
-	private String ruleamount;
+	private Integer ruleAmount;
 	
-//	@ManyToOne()
-//	@JoinColumn(name="challanId")
-//	private Challan challan_id;
-//	
-//
-//	public Challan getChallan_id() {
-//		return challan_id;
-//	}
-//
-//	public void setChallan_id(Challan challan_id) {
-//		this.challan_id = challan_id;
-//	}
-
+	
+	
 	public Long getRuleId() {
 		return ruleId;
 	}
@@ -53,12 +40,12 @@ public class ViolationRulesDetails {
 		this.ruleDetail = ruleDetail;
 	}
 
-	public String getRuleamount() {
-		return ruleamount;
+	public Integer getRuleamount() {
+		return ruleAmount;
 	}
 
-	public void setRuleamount(String ruleamount) {
-		this.ruleamount = ruleamount;
+	public void setRuleamount(Integer ruleamount) {
+		this.ruleAmount = ruleamount;
 	}
 	   
 	
