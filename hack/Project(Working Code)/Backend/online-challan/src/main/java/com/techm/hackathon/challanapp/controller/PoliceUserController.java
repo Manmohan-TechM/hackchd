@@ -93,7 +93,7 @@ public class PoliceUserController {
 	@RequestMapping(value = "/challan", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ChallanResponse doChallan(@RequestBody final Challan challan) {
 		ChallanResponse res = new ChallanResponse();
-		challanRepository.save(challan);
+		Challan challanData = challanRepository.save(challan);
 		final List<Challan> listofChallan = new ArrayList<>();
 		final Iterable<Challan> all = challanRepository.findAll();
 		all.forEach(new Consumer<Challan>() {
@@ -118,7 +118,7 @@ public class PoliceUserController {
 				.findFirst().orElse(null);
 		policeUser.setChallan_count_total(policeUser.getChallan_count_total() + 1);		
 		userRepository.save(policeUser);
-		
+		res.setChallan_number(String.valueOf(challanData.getChallanId()));
 		return res;		
 	}
 	
