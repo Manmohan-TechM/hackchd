@@ -59,13 +59,14 @@ public class PoliceUserController {
 	@RequestMapping(value = "/resetPassword", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public AppUser changePassword(@RequestBody UserLoginRequest userRequest) throws AuthenticationException {
 		
-		UserLoginResponse res=new UserLoginResponse();
+		//UserLoginResponse res=new UserLoginResponse();
 		AppUser userUpdated= findAll()
 				.parallelStream()
 				.filter(user -> user.getUsername().equalsIgnoreCase(
 						userRequest.getUsername()))
 				.findFirst().orElse(null);
-		
+		userUpdated.setPassword(userRequest.getPassword());
+		userRepository.save(userUpdated);
 		userUpdated.setPassword(userRequest.getPassword());
 		return userUpdated;
 	}
