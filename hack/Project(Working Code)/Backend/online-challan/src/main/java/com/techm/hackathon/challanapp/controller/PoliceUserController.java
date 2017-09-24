@@ -110,7 +110,7 @@ public class PoliceUserController {
 				prevlistofChallansforCulprit.add(ch);
 			}
 		});
-		res.setChallanList(prevlistofChallansforCulprit);
+		//res.setChallanList(prevlistofChallansforCulprit);
 		// Updating policeman challan count
 		AppUser policeUser= findAll()
 				.parallelStream()
@@ -128,21 +128,56 @@ public class PoliceUserController {
 		List<Challan> challanList = new ArrayList<>();
 		if(null != challanHistoryRequest.getAadhar_no() && !challanHistoryRequest.getAadhar_no().isEmpty())
 			challanList = challanRepository.getChallanByAadharNo(challanHistoryRequest.getAadhar_no());
-		else if(null != challanHistoryRequest.getChallanNo() && !challanHistoryRequest.getChallanNo().isEmpty())
-			challanList = challanRepository.getChallanByAadharNo(challanHistoryRequest.getAadhar_no());		
+		else if(null != challanHistoryRequest.getChallanNo() && 0!=challanHistoryRequest.getChallanNo())
+			challanList = challanRepository.getChallanByChallanId(challanHistoryRequest.getChallanNo());		
 		
 		return challanList;
 	}
 	
 	@RequestMapping(value = "/payChallan", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public List<Challan> payChallan(@RequestBody ChallanHistoryRequest challanHistoryRequest) {
-		List<Challan> challanList = new ArrayList<>();
+	public List<Challan> payChallan(@RequestBody ChallanHistoryRequest challanHistoryRequest) throws AuthenticationException {
+		/*List<Challan> challanList = new ArrayList<>();
 		if(null != challanHistoryRequest.getAadhar_no() && !challanHistoryRequest.getAadhar_no().isEmpty())
 			challanList = challanRepository.payChallanByAadharNo(challanHistoryRequest.getAadhar_no());
 		else if(null != challanHistoryRequest.getChallanNo() && !challanHistoryRequest.getChallanNo().isEmpty())
-			challanList = challanRepository.payChallanByAadharNo(challanHistoryRequest.getAadhar_no());		
+			challanList = challanRepository.payChallanByAadharNo(challanHistoryRequest.getAadhar_no());*/
+		
+		List<Challan> challanList = challanList();
+		Challan challan;
+		if(null != challanHistoryRequest.getAadhar_no() && !challanHistoryRequest.getAadhar_no().isEmpty())
+		{
+			challan= challanList		
+				.parallelStream()
+				.filter(user -> user.getAadhar_no().equalsIgnoreCase(
+						challanHistoryRequest.getAadhar_no()))
+				.findFirst().orElse(null);
+			challan.setChallanPayment(true);
+		}
+		else if(null != challanHistoryRequest.getChallanNo() && 0!=challanHistoryRequest.getChallanNo()){			
+			challan= challanList
+					.parallelStream()
+					.filter(user -> user.getChallanId().equals(
+							challanHistoryRequest.getChallanNo()))
+					.findFirst().orElse(null);
+			challan.setChallanPayment(true);
+		} else throw new AuthenticationException("Invalid aadhar card or Challan Number. Challan Not Found.");
+		challanRepository.save(challan);
+		//userUpdated.setPassword(userRequest.getPassword());
 		
 		return challanList;
+	}
+
+	private List<Challan> challanList() {
+		final List<Challan> resultList = new ArrayList<>();
+		final Iterable<Challan> all = challanRepository.findAll();
+		all.forEach(new Consumer<Challan>() {
+			@Override
+			public void accept(Challan challan) {
+				resultList.add(challan);
+			}
+		});
+		
+		return resultList;
 	}
 	@RequestMapping(value = "/adminauth", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public UserLoginResponse adminAuth(@RequestBody UserLoginRequest userRequest) throws AuthenticationException {

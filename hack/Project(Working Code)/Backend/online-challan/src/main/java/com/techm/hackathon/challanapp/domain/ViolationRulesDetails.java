@@ -1,12 +1,18 @@
 package com.techm.hackathon.challanapp.domain;
 
+import java.util.Collection;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class ViolationRulesDetails {
@@ -21,9 +27,18 @@ public class ViolationRulesDetails {
 	    
 	@Column(name = "ruleamount", nullable = false)
 	private Integer ruleAmount;
-	
-	
-	
+	@JsonIgnore
+	@ManyToMany
+	private List<Challan> challans;
+
+	public List<Challan> getChallans() {
+		return challans;
+	}
+
+	public void setChallans(List<Challan> challans) {
+		this.challans = challans;
+	}
+
 	public Long getRuleId() {
 		return ruleId;
 	}

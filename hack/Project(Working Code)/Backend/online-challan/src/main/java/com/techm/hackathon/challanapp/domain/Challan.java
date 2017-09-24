@@ -1,12 +1,18 @@
 package com.techm.hackathon.challanapp.domain;
 
+import java.util.Collection;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Challan {
@@ -58,19 +64,32 @@ public class Challan {
 
 	
 	//@JsonIgnore
-	@OneToOne(optional=false,cascade=CascadeType.MERGE)
-	private ViolationRulesDetails rules_violated;
-	
-	public String getPoliceUserName() {
-		return policeUserName;
-	}
+	//@OneToOne(optional=false,cascade=CascadeType.MERGE)
+	//private ViolationRulesDetails rules_violated;
 
-	public ViolationRulesDetails getRules_violated() {
+	/*public ViolationRulesDetails getRules_violated() {
 		return rules_violated;
 	}
 
 	public void setRules_violated(ViolationRulesDetails rules_violated) {
 		this.rules_violated = rules_violated;
+	}*/
+	@JsonIgnore
+	@ManyToMany(mappedBy="challans")
+	private List<ViolationRulesDetails> rules_violated;
+	
+	
+
+	public List<ViolationRulesDetails> getRules_violated() {
+		return rules_violated;
+	}
+
+	public void setRules_violated(List<ViolationRulesDetails> rules_violated) {
+		this.rules_violated = rules_violated;
+	}
+
+	public String getPoliceUserName() {
+		return policeUserName;
 	}
 
 	public void setPoliceUserName(String policeUserName) {
