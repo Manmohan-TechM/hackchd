@@ -62,7 +62,7 @@ public class Challan {
 
 	
 	//@JsonIgnore
-	@OneToOne(optional=false,cascade=CascadeType.ALL)
+	@OneToOne(optional=false,cascade=CascadeType.MERGE)
 	private ViolationRulesDetails rules_violated;
 	
 	public String getPoliceUserName() {
